@@ -1,0 +1,82 @@
+syntax = "proto3";
+
+package consistency;
+
+
+// The service definition format $Client$Server
+
+
+service Server_RegServer{
+    rpc Register(Server) returns (ServerRegResponse) {}
+
+}
+
+service RegServer_Server{
+    rpc AddReplica(Server) returns (Void) {}
+
+}
+
+service Client_RegServer{
+    rpc GetServerList(Void) returns (stream Server){}
+}
+
+service Client_Server{
+    rpc Write(WriteRequest) returns (WriteResponse){}
+    rpc Read(ReadRequest) returns (ReadResponse){}
+    rpc Delete(DeleteRequest) returns (DeleteResponse){}
+    rpc Block(Void) returns (Void){}
+    rpc Unblock(Void) returns (Void){}
+}
+
+
+message Void{}
+
+message Server{
+    string address = 1;
+}
+
+message ServerRegResponse{
+    string primary_server = 1;
+    bool success = 2;
+}
+
+message WriteRequest{
+    string name = 1;
+    string content = 2;
+    string uuid = 3;
+    int64 timestamp = 4;
+    int64 seq = 5;        //Optionally sent when primary replica sends the version to replicas
+}
+
+message WriteResponse{      //This is modelling the ack message
+    string status = 1;    
+    string uuid = 2;
+    int64 timestamp = 3;
+    int64 seq= 4;
+
+}
+
+message ReadRequest{
+    string uuid = 1;
+}
+
+
+message ReadResponse{
+    string status = 1;
+    string name = 2;
+    string content = 3;
+    int64 timestamp = 4;
+}
+
+
+message DeleteRequest{
+    string uuid = 1;
+    int64 seq = 2;
+    int64 timestamp = 3;
+}
+
+message DeleteResponse{
+    string status = 1;
+    int64 seq = 2;
+    int64 timestamp = 3;
+}
