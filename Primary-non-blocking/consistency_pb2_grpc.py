@@ -157,6 +157,16 @@ class Client_ServerStub(object):
         request_serializer=consistency__pb2.DeleteRequest.SerializeToString,
         response_deserializer=consistency__pb2.DeleteResponse.FromString,
         )
+    self.Block = channel.unary_unary(
+        '/consistency.Client_Server/Block',
+        request_serializer=consistency__pb2.Void.SerializeToString,
+        response_deserializer=consistency__pb2.Void.FromString,
+        )
+    self.Unblock = channel.unary_unary(
+        '/consistency.Client_Server/Unblock',
+        request_serializer=consistency__pb2.Void.SerializeToString,
+        response_deserializer=consistency__pb2.Void.FromString,
+        )
 
 
 class Client_ServerServicer(object):
@@ -184,6 +194,20 @@ class Client_ServerServicer(object):
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
+  def Block(self, request, context):
+    # missing associated documentation comment in .proto file
+    pass
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
+  def Unblock(self, request, context):
+    # missing associated documentation comment in .proto file
+    pass
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
 
 def add_Client_ServerServicer_to_server(servicer, server):
   rpc_method_handlers = {
@@ -201,6 +225,16 @@ def add_Client_ServerServicer_to_server(servicer, server):
           servicer.Delete,
           request_deserializer=consistency__pb2.DeleteRequest.FromString,
           response_serializer=consistency__pb2.DeleteResponse.SerializeToString,
+      ),
+      'Block': grpc.unary_unary_rpc_method_handler(
+          servicer.Block,
+          request_deserializer=consistency__pb2.Void.FromString,
+          response_serializer=consistency__pb2.Void.SerializeToString,
+      ),
+      'Unblock': grpc.unary_unary_rpc_method_handler(
+          servicer.Unblock,
+          request_deserializer=consistency__pb2.Void.FromString,
+          response_serializer=consistency__pb2.Void.SerializeToString,
       ),
   }
   generic_handler = grpc.method_handlers_generic_handler(

@@ -1,0 +1,1 @@
+In Primary Backup Blocking Protocol, to test blocking functionality uncomment time.sleep (in Write and Delete RPC) in server.py

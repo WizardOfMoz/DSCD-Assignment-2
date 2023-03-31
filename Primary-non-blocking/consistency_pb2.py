@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='consistency',
   syntax='proto3',
   serialized_options=None,
-  serialized_pb=_b('\n\x11\x63onsistency.proto\x12\x0b\x63onsistency\"\x06\n\x04Void\"\x19\n\x06Server\x12\x0f\n\x07\x61\x64\x64ress\x18\x01 \x01(\t\"<\n\x11ServerRegResponse\x12\x16\n\x0eprimary_server\x18\x01 \x01(\t\x12\x0f\n\x07success\x18\x02 \x01(\x08\"[\n\x0cWriteRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0f\n\x07\x63ontent\x18\x02 \x01(\t\x12\x0c\n\x04uuid\x18\x03 \x01(\t\x12\x11\n\ttimestamp\x18\x04 \x01(\x03\x12\x0b\n\x03seq\x18\x05 \x01(\x03\"M\n\rWriteResponse\x12\x0e\n\x06status\x18\x01 \x01(\t\x12\x0c\n\x04uuid\x18\x02 \x01(\t\x12\x11\n\ttimestamp\x18\x03 \x01(\x03\x12\x0b\n\x03seq\x18\x04 \x01(\x03\"\x1b\n\x0bReadRequest\x12\x0c\n\x04uuid\x18\x01 \x01(\t\"P\n\x0cReadResponse\x12\x0e\n\x06status\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x0f\n\x07\x63ontent\x18\x03 \x01(\t\x12\x11\n\ttimestamp\x18\x04 \x01(\x03\"=\n\rDeleteRequest\x12\x0c\n\x04uuid\x18\x01 \x01(\t\x12\x0b\n\x03seq\x18\x02 \x01(\x03\x12\x11\n\ttimestamp\x18\x03 \x01(\x03\"@\n\x0e\x44\x65leteResponse\x12\x0e\n\x06status\x18\x01 \x01(\t\x12\x0b\n\x03seq\x18\x02 \x01(\x03\x12\x11\n\ttimestamp\x18\x03 \x01(\x03\x32U\n\x10Server_RegServer\x12\x41\n\x08Register\x12\x13.consistency.Server\x1a\x1e.consistency.ServerRegResponse\"\x00\x32J\n\x10RegServer_Server\x12\x36\n\nAddReplica\x12\x13.consistency.Server\x1a\x11.consistency.Void\"\x00\x32O\n\x10\x43lient_RegServer\x12;\n\rGetServerList\x12\x11.consistency.Void\x1a\x13.consistency.Server\"\x00\x30\x01\x32\xd5\x01\n\rClient_Server\x12@\n\x05Write\x12\x19.consistency.WriteRequest\x1a\x1a.consistency.WriteResponse\"\x00\x12=\n\x04Read\x12\x18.consistency.ReadRequest\x1a\x19.consistency.ReadResponse\"\x00\x12\x43\n\x06\x44\x65lete\x12\x1a.consistency.DeleteRequest\x1a\x1b.consistency.DeleteResponse\"\x00\x62\x06proto3')
+  serialized_pb=_b('\n\x11\x63onsistency.proto\x12\x0b\x63onsistency\"\x06\n\x04Void\"\x19\n\x06Server\x12\x0f\n\x07\x61\x64\x64ress\x18\x01 \x01(\t\"<\n\x11ServerRegResponse\x12\x16\n\x0eprimary_server\x18\x01 \x01(\t\x12\x0f\n\x07success\x18\x02 \x01(\x08\"[\n\x0cWriteRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0f\n\x07\x63ontent\x18\x02 \x01(\t\x12\x0c\n\x04uuid\x18\x03 \x01(\t\x12\x11\n\ttimestamp\x18\x04 \x01(\x03\x12\x0b\n\x03seq\x18\x05 \x01(\x03\"M\n\rWriteResponse\x12\x0e\n\x06status\x18\x01 \x01(\t\x12\x0c\n\x04uuid\x18\x02 \x01(\t\x12\x11\n\ttimestamp\x18\x03 \x01(\x03\x12\x0b\n\x03seq\x18\x04 \x01(\x03\"\x1b\n\x0bReadRequest\x12\x0c\n\x04uuid\x18\x01 \x01(\t\"P\n\x0cReadResponse\x12\x0e\n\x06status\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x0f\n\x07\x63ontent\x18\x03 \x01(\t\x12\x11\n\ttimestamp\x18\x04 \x01(\x03\"=\n\rDeleteRequest\x12\x0c\n\x04uuid\x18\x01 \x01(\t\x12\x0b\n\x03seq\x18\x02 \x01(\x03\x12\x11\n\ttimestamp\x18\x03 \x01(\x03\"@\n\x0e\x44\x65leteResponse\x12\x0e\n\x06status\x18\x01 \x01(\t\x12\x0b\n\x03seq\x18\x02 \x01(\x03\x12\x11\n\ttimestamp\x18\x03 \x01(\x03\x32U\n\x10Server_RegServer\x12\x41\n\x08Register\x12\x13.consistency.Server\x1a\x1e.consistency.ServerRegResponse\"\x00\x32J\n\x10RegServer_Server\x12\x36\n\nAddReplica\x12\x13.consistency.Server\x1a\x11.consistency.Void\"\x00\x32O\n\x10\x43lient_RegServer\x12;\n\rGetServerList\x12\x11.consistency.Void\x1a\x13.consistency.Server\"\x00\x30\x01\x32\xb9\x02\n\rClient_Server\x12@\n\x05Write\x12\x19.consistency.WriteRequest\x1a\x1a.consistency.WriteResponse\"\x00\x12=\n\x04Read\x12\x18.consistency.ReadRequest\x1a\x19.consistency.ReadResponse\"\x00\x12\x43\n\x06\x44\x65lete\x12\x1a.consistency.DeleteRequest\x1a\x1b.consistency.DeleteResponse\"\x00\x12/\n\x05\x42lock\x12\x11.consistency.Void\x1a\x11.consistency.Void\"\x00\x12\x31\n\x07Unblock\x12\x11.consistency.Void\x1a\x11.consistency.Void\"\x00\x62\x06proto3')
 )
 
 
@@ -556,7 +556,7 @@ _CLIENT_SERVER = _descriptor.ServiceDescriptor(
   index=3,
   serialized_options=None,
   serialized_start=788,
-  serialized_end=1001,
+  serialized_end=1101,
   methods=[
   _descriptor.MethodDescriptor(
     name='Write',
@@ -583,6 +583,24 @@ _CLIENT_SERVER = _descriptor.ServiceDescriptor(
     containing_service=None,
     input_type=_DELETEREQUEST,
     output_type=_DELETERESPONSE,
+    serialized_options=None,
+  ),
+  _descriptor.MethodDescriptor(
+    name='Block',
+    full_name='consistency.Client_Server.Block',
+    index=3,
+    containing_service=None,
+    input_type=_VOID,
+    output_type=_VOID,
+    serialized_options=None,
+  ),
+  _descriptor.MethodDescriptor(
+    name='Unblock',
+    full_name='consistency.Client_Server.Unblock',
+    index=4,
+    containing_service=None,
+    input_type=_VOID,
+    output_type=_VOID,
     serialized_options=None,
   ),
 ])

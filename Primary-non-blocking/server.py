@@ -9,6 +9,7 @@ from google.protobuf import wrappers_pb2
 from google.protobuf import timestamp_pb2
 import os
 import time
+import threading
 
 
 REPLICAS = []
@@ -31,6 +32,23 @@ class RegServer_ServerService(consistency_pb2_grpc.RegServer_ServerServicer):
 
 class Client_ServerService(consistency_pb2_grpc.Client_ServerServicer):
     
+    def write_to_replicas(self,request):
+        for replica in REPLICAS:
+            with grpc.insecure_channel(replica) as channel:
+                time.sleep(2)
+                stub = consistency_pb2_grpc.Client_ServerStub(channel)
+                response = stub.Write(request)
+
+        
+    def delete_from_replicas(self,request):
+        for replica in REPLICAS:
+            with grpc.insecure_channel(replica) as channel:
+                time.sleep(2)
+                stub = consistency_pb2_grpc.Client_ServerStub(channel)
+                response = stub.Delete(request)
+
+
+
     def Write(self,request,context):
         name = request.name
         content = request.content
@@ -66,30 +84,27 @@ class Client_ServerService(consistency_pb2_grpc.Client_ServerServicer):
                 if uuid not in MEMORY_MAP:
                     MEMORY_MAP[uuid]=(name,timestamp)
                     create = True
-
                 with open(FILE_PATH,"w") as f:
                     f.write(content)
-
-                if create:
-                    print(f"File {uuid} created - Version: {version}") 
+                
+                if create :
+                    print(f"File {uuid} created - Version: {version}")
+                
                 else:
                     print(f"File {uuid} updated - Version: {version}")
-                    
 
                 request.seq = 3
                 request.timestamp = timestamp
-                for replica in REPLICAS:
-                    with grpc.insecure_channel(replica) as channel:
-                        time.sleep(2)
-                        stub = consistency_pb2_grpc.Client_ServerStub(channel)
-                        response = stub.Write(request)
+                
+                thread = threading.Thread(target=self.write_to_replicas,args=(request,))
+                thread.start()
+                
 
                 return consistency_pb2.WriteResponse(status="SUCCESS",uuid=uuid,timestamp=timestamp)
              
         if seq == 3:    #File after passing checks in primary replica is written to all replicas
             timestamp = request.timestamp
             version = pd.to_datetime(timestamp).strftime('%d/%m/%Y %H:%M:%S')
-            
             create = False
             if uuid not in MEMORY_MAP:
                 create = True
@@ -97,9 +112,10 @@ class Client_ServerService(consistency_pb2_grpc.Client_ServerServicer):
             
             with open(FILE_PATH,"w") as f:
                 f.write(content)
+
+            if create :
+                print(f"File {uuid} created - Version: {version}")
             
-            if create:
-                print(f"File {uuid} created - Version: {version}")   
             else:
                 print(f"File {uuid} updated - Version: {version}")
 
@@ -149,17 +165,15 @@ class Client_ServerService(consistency_pb2_grpc.Client_ServerServicer):
             version = pd.to_datetime(timestamp).strftime('%d/%m/%Y %H:%M:%S')
             os.remove(FILE_PATH)
             MEMORY_MAP[uuid] = ("",timestamp)    
-        
-            print(f"File {uuid} deleted at {version}")
             
-            for replica in REPLICAS:
-                with grpc.insecure_channel(replica) as channel:
-                    time.sleep(2)
-                    stub = consistency_pb2_grpc.Client_ServerStub(channel)
-                    request.seq = 3
-                    request.timestamp = timestamp
-                    response = stub.Delete(request)
+            print(f"File {uuid} deleted at {version}")
 
+            request.seq = 3
+            request.timestamp = timestamp
+
+            thread = threading.Thread(target=self.delete_from_replicas,args=(request,))
+            thread.start()
+            
             return consistency_pb2.DeleteResponse(status="SUCCESS",timestamp=timestamp)
         
         if seq ==3: #delete passed to all replicas after passing checks in primary replica
@@ -169,8 +183,9 @@ class Client_ServerService(consistency_pb2_grpc.Client_ServerServicer):
             FILE_PATH = f"{DIRECTORY}/{name}"   #Success
             os.remove(FILE_PATH)
             MEMORY_MAP[uuid] = ("",request.timestamp)
-            
+
             print(f"File {uuid} deleted at {version}")
+
             return consistency_pb2.DeleteResponse(status="SUCCESS")
                 
          
