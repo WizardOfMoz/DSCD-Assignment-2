@@ -4,18 +4,21 @@ import consistency_pb2_grpc
 from concurrent import futures
 import uuid
 import pandas as pd
+import random
 
 
 
 channel = grpc.insecure_channel('localhost:8888')
 stub = consistency_pb2_grpc.Client_RegServerStub(channel)
 SERVER_LIST = list(stub.GetServerList(consistency_pb2.Void()))
-print("SERVER LIST:")
-for i,server in enumerate(SERVER_LIST):
-    print(f"{i+1}. {server.address}")
+# print("SERVER LIST:")
+# for i,server in enumerate(SERVER_LIST):
+#     print(f"{i+1}. {server.address}")
 
-i = int(input("Enter the server number: "))
-address = SERVER_LIST[i-1].address
+# i = int(input("Enter the server number: "))
+# address = SERVER_LIST[i-1].address
+address = random.choice(SERVER_LIST).address
+
 print(f"Connected to {address}")
 channel = grpc.insecure_channel(address)
 stub = consistency_pb2_grpc.Client_ServerStub(channel)

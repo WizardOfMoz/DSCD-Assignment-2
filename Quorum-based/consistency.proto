@@ -1,0 +1,76 @@
+syntax = "proto3";
+
+package consistency;
+
+
+// The service definition format $Client$Server
+
+
+service Server_RegServer{
+    rpc Register(Server) returns (ServerRegResponse) {}
+
+}
+
+
+service Client_RegServer{
+    rpc GetServerList(Void) returns (stream Server){}        //N - For Debugging
+    rpc GetNWServerList(Void) returns (stream Server){}      //N_w - For Writing/Deleteion
+    rpc GetNRServerList(Void) returns (stream Server){}      //N_r - For Reading
+    
+}
+
+service Client_Server{
+    rpc Write(WriteRequest) returns (WriteResponse){}
+    rpc Read(ReadRequest) returns (ReadResponse){}
+    rpc Delete(DeleteRequest) returns (DeleteResponse){}
+
+}
+
+
+message Void{}
+
+message Server{
+    string address = 1;
+}
+
+message ServerRegResponse{
+    bool success = 1;
+}
+
+message WriteRequest{
+    string name = 1;
+    string content = 2;
+    string uuid = 3;
+    int64 timestamp = 4;
+    
+}
+
+message WriteResponse{      //This is modelling the ack message
+    string status = 1;    
+    string uuid = 2;
+    int64 timestamp = 3;
+
+}
+
+message ReadRequest{
+    string uuid = 1;
+}
+
+
+message ReadResponse{
+    string status = 1;
+    string name = 2;
+    string content = 3;
+    int64 timestamp = 4;
+}
+
+
+message DeleteRequest{
+    string uuid = 1;
+    int64 timestamp = 2;
+}
+
+message DeleteResponse{
+    string status = 1;
+    int64 timestamp = 2;
+}
