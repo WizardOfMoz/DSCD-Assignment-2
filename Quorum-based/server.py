@@ -33,9 +33,11 @@ class Client_ServerService(consistency_pb2_grpc.Client_ServerServicer):
 
         else:
             create = False
+            
             if uuid not in MEMORY_MAP:
-                MEMORY_MAP[uuid]=(name,timestamp)
                 create = True
+            
+            MEMORY_MAP[uuid]=(name,timestamp)
 
             with open(FILE_PATH,"w") as f:
                 f.write(content)
@@ -73,7 +75,8 @@ class Client_ServerService(consistency_pb2_grpc.Client_ServerServicer):
         version = pd.to_datetime(timestamp).strftime('%d/%m/%Y %H:%M:%S')
         if uuid not in MEMORY_MAP:  #File does not exist
             MEMORY_MAP[uuid] = ("",timestamp)
-            print(f"File {uuid} deleted at {version}")            
+            print(f"File {uuid} deleted at {version}")
+            return consistency_pb2.DeleteResponse(status="FILE DOES NOT EXIST",timestamp=timestamp)        
         
         (name,_) = MEMORY_MAP[uuid]
         if name not in os.listdir(DIRECTORY):   #File already deleted
@@ -94,13 +97,12 @@ class Client_ServerService(consistency_pb2_grpc.Client_ServerServicer):
 
 def run():
     global DIRECTORY
-
     if(len(sys.argv) != 2):
         print("Usage: python server.py <port>")
         exit(1)
 
     port = sys.argv[1]
-
+    # print("Server running on port",port)
     DIRECTORY = f"data/replica_{port}"
     if not os.path.exists(DIRECTORY):
         os.makedirs(DIRECTORY,exist_ok=True)

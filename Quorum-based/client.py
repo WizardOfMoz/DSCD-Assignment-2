@@ -15,6 +15,7 @@ while True:
     print("2. Read")
     print("3. Delete")
     print("4. Get Replica List")
+    print("5. Exit")
 
     choice = int(input("Enter your choice: "))
     
@@ -26,21 +27,15 @@ while True:
             UUID = input("Enter the UUID: ")
         
         name = input("Enter the name: ")
-        print("Gay")
         content = input("Enter the content: ")
-        print("Fuck")
         response = reg_stub.GetNWServerList(consistency_pb2.Void())
         server_list = [server.address for server in response]
 
         for server in server_list:
             channel = grpc.insecure_channel(server)
-            print("NOTHING")
             stub = consistency_pb2_grpc.Client_ServerStub(channel)
-            print("STUBBY")
             request = consistency_pb2.WriteRequest(uuid=UUID,name=name,content=content)
-            print("LMAO")
             response = stub.Write(request)
-            print("DUMB")
             print(f"SERVER: {server}")
             if response.status == "SUCCESS":
                 version = pd.to_datetime(response.timestamp).strftime('%Y/%m/%d %H:%M:%S')
@@ -61,7 +56,7 @@ while True:
             channel = grpc.insecure_channel(server)
             stub = consistency_pb2_grpc.Client_ServerStub(channel)
             response = stub.Read(consistency_pb2.ReadRequest(uuid=UUID))
-            # print(f"server:{server}, status:{response.status}, version : {pd.to_datetime(response.timestamp).strftime('%Y/%m/%d %H:%M:%S')}")
+            print(f"server:{server}, status:{response.status}, version : {pd.to_datetime(response.timestamp).strftime('%Y/%m/%d %H:%M:%S')}")
             if response.status == "FILE DOES NOT EXIST":
                 continue
             if not latest_response:
@@ -106,6 +101,9 @@ while True:
             print(f"{i+1}. {server.address}")
         
         print()
+    
+    if choice == 5:
+        break
 
 
     

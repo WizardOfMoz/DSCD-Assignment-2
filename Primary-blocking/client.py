@@ -49,7 +49,7 @@ while True:
         else:
             print(f"Status : {response.status}")
     
-    if choice == 2:
+    elif choice == 2:
         UUID = input("Enter the UUID: ")
         request = consistency_pb2.ReadRequest(uuid=UUID)
         response = stub.Read(request)
@@ -65,7 +65,7 @@ while True:
             print(f"Status : {response.status}\nName : {response.name}\nContent : {response.content}\nVersion : {version}")
         
     
-    if choice == 3:
+    elif choice == 3:
         UUID = input("Enter the UUID: ")
         request = consistency_pb2.DeleteRequest(uuid=UUID,seq=1)
         response = stub.Delete(request)
@@ -74,7 +74,8 @@ while True:
             version = pd.to_datetime(response.timestamp).strftime('%Y/%m/%d %H:%M:%S')
             print(f"Version : {version}")
     
-    
+    else:
+        break
 
 
 

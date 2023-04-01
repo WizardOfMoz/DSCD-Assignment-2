@@ -18,12 +18,12 @@ class Server_RegServerService(consistency_pb2_grpc.Server_RegServerServicer):
         print(f"Address : {address}")
         SERVERS.append(address)
         if self.PRIMARY_SERVER:
-            print("PRIMARY SERVER EXISTS")
+            # print("PRIMARY SERVER EXISTS")
             with grpc.insecure_channel(self.PRIMARY_SERVER) as channel:
                 stub = consistency_pb2_grpc.RegServer_ServerStub(channel)
                 stub.AddReplica(consistency_pb2.Server(address=address))
         else:
-            print("PRIMARY SERVER REGISTERED")
+            # print("PRIMARY SERVER REGISTERED")
             self.PRIMARY_SERVER = address
         return consistency_pb2.ServerRegResponse(success=True,primary_server=self.PRIMARY_SERVER)
 

@@ -35,7 +35,7 @@ class Client_ServerService(consistency_pb2_grpc.Client_ServerServicer):
     def write_to_replicas(self,request):
         for replica in REPLICAS:
             with grpc.insecure_channel(replica) as channel:
-                time.sleep(2)
+                # time.sleep(2)
                 stub = consistency_pb2_grpc.Client_ServerStub(channel)
                 response = stub.Write(request)
 
@@ -43,7 +43,7 @@ class Client_ServerService(consistency_pb2_grpc.Client_ServerServicer):
     def delete_from_replicas(self,request):
         for replica in REPLICAS:
             with grpc.insecure_channel(replica) as channel:
-                time.sleep(2)
+                # time.sleep(2)
                 stub = consistency_pb2_grpc.Client_ServerStub(channel)
                 response = stub.Delete(request)
 
@@ -81,9 +81,10 @@ class Client_ServerService(consistency_pb2_grpc.Client_ServerServicer):
 
             else:
                 create = False
+                
                 if uuid not in MEMORY_MAP:
-                    MEMORY_MAP[uuid]=(name,timestamp)
                     create = True
+                MEMORY_MAP[uuid]=(name,timestamp)
                 with open(FILE_PATH,"w") as f:
                     f.write(content)
                 
@@ -106,9 +107,10 @@ class Client_ServerService(consistency_pb2_grpc.Client_ServerServicer):
             timestamp = request.timestamp
             version = pd.to_datetime(timestamp).strftime('%d/%m/%Y %H:%M:%S')
             create = False
+            
             if uuid not in MEMORY_MAP:
                 create = True
-                MEMORY_MAP[uuid]=(name,timestamp)
+            MEMORY_MAP[uuid]=(name,timestamp)    
             
             with open(FILE_PATH,"w") as f:
                 f.write(content)
